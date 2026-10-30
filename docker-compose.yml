@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dealsphere
+      POSTGRES_PASSWORD: dealsphere_local
+      POSTGRES_DB: dealsphere
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - dealsphere_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dealsphere -d dealsphere"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+volumes:
+  dealsphere_pg:
